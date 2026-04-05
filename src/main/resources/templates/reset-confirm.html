@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Choose New Password</title>
+	<style>
+		:root {
+			--bg: #fff5f8;
+			--panel: #fffafb;
+			--border: #efbfd0;
+			--strong: #b63e73;
+			--text: #3a2230;
+			--muted: #7a5767;
+		}
+
+		body {
+			font-family: "Segoe UI", sans-serif;
+			margin: 2rem;
+			display: grid;
+			place-items: center;
+			min-height: 90vh;
+			background: linear-gradient(180deg, #fff7fa 0%, #ffe3ee 100%);
+			color: var(--text);
+		}
+
+		main {
+			width: min(30rem, 100%);
+			border: 1px solid var(--border);
+			padding: 2rem;
+			background: var(--panel);
+			box-shadow: 0 18px 45px rgba(182, 62, 115, 0.12);
+			border-radius: 1.25rem;
+		}
+
+		form {
+			display: grid;
+			gap: 0.75rem;
+		}
+
+		label {
+			display: grid;
+			gap: 0.25rem;
+		}
+
+		input {
+			padding: 0.5rem;
+			border: 1px solid var(--border);
+			border-radius: 0.75rem;
+		}
+
+		button,
+		a {
+			padding: 0.7rem 1rem;
+			border-radius: 999px;
+			border: none;
+			background: var(--strong);
+			color: white;
+			text-decoration: none;
+			font-weight: 600;
+			text-align: center;
+		}
+
+		.note {
+			color: var(--muted);
+		}
+
+		.error {
+			color: #b00020;
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Choose a New Password</h1>
+		<p class="note" th:text="${passwordPolicy}"></p>
+		<p class="error" th:if="${error}" th:text="${error}"></p>
+		<form th:action="@{/reset/save}" th:object="${resetPasswordForm}" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<input type="hidden" th:field="*{token}">
+			<label>New password
+				<input type="password" th:field="*{password}" required>
+			</label>
+			<label>Confirm password
+				<input type="password" th:field="*{confirmPassword}" required>
+			</label>
+			<button type="submit">Save new password</button>
+		</form>
+		<p class="note">This link expires 15 minutes after it is issued.</p>
+	</main>
+</body>
+</html>
